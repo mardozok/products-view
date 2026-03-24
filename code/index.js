@@ -1,5 +1,10 @@
 const API_URL = "https://invadable-chasidy-fleshly.ngrok-free.dev/products";
 
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("scanBtn")
+        .addEventListener("click", startScanner);
+});
+
 function log(msg) {
     document.getElementById("log").innerText += msg + "\n";
 }
