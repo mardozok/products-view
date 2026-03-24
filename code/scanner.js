@@ -1,11 +1,10 @@
-console.log("JS cargó");
-
 import { addProductToCart } from "./product.js";
+
 const API_URL = "https://invadable-chasidy-fleshly.ngrok-free.dev/products";
 const btnScan = document.getElementById("scanBtn");
-console.log(btnScan)
-btnScan.addEventListener("click", startScanner);
 
+
+btnScan.addEventListener("click", startScanner);
 
 function log(msg) {
     document.getElementById("log").innerText += msg + "\n";

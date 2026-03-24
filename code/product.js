@@ -1,7 +1,7 @@
 export function addProductToCart(product) {
     const container = document.querySelector(".products");
 
-    // 👉 evitar duplicados
+
     const existing = document.querySelector(`[data-id="${product.id}"]`);
 
     if (existing) {
