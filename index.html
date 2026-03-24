@@ -33,7 +33,7 @@
                     )?.id || devices[0].id;
 
                     html5QrCode.start(
-                        cameraId,
+                        { facingMode: "environment" },
                         { fps: 10, qrbox: 250 },
                         (decodedText) => {
                             log("SCAN: " + decodedText);
@@ -47,7 +47,7 @@
                                 })
                                 .catch(err => log("ERROR: " + err));
 
-                            html5QrCode.stop(); // corta después de escanear
+                            html5QrCode.stop();
                         }
                     );
                 }
