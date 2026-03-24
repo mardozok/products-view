@@ -1,61 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
-    <title>Scanner</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner now</title>
+
+    <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="index.js" defer></script>
 </head>
 
 <body>
-    <input type="file" accept="image/*, video/*" capture="environment">
-    <h2>Escanear producto</h2>
-    <button onclick="startScanner()">Escanear</button>
 
-    <div id="reader" style="width:300px; margin-top:20px;"></div>
+    <!-- 🔝 HEADER FIJO -->
+    <div class="scanner-header">
+        <h2>Escanear producto</h2>
+        <button onclick="startScanner()">📷 Escanear</button>
+    </div>
 
-    <pre id="log"></pre>
+    <!-- CONTENIDO -->
+    <div class="container content">
 
-    <script>
-        const API_URL = "https://invadable-chasidy-fleshly.ngrok-free.dev/products";
+        <div class="products">
+            <div class="product">
+                <img src="https://via.placeholder.com/100">
+                <div class="info">
+                    <h3>Basic Tee</h3>
+                    <p class="variant">Sienna | Large</p>
+                    <p class="price">$32.00</p>
+                    <span class="stock">✔ In stock</span>
+                </div>
+                <div class="actions">
+                    <select>
+                        <option>1</option>
+                        <option>2</option>
+                    </select>
+                    <button class="remove">✕</button>
+                </div>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/100">
+                <div class="info">
+                    <h3>Basic Tee</h3>
+                    <p class="variant">Sienna | Large</p>
+                    <p class="price">$32.00</p>
+                    <span class="stock">✔ In stock</span>
+                </div>
+                <div class="actions">
+                    <select>
+                        <option>1</option>
+                        <option>2</option>
+                    </select>
+                    <button class="remove">✕</button>
+                </div>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/100">
+                <div class="info">
+                    <h3>Basic Tee</h3>
+                    <p class="variant">Sienna | Large</p>
+                    <p class="price">$32.00</p>
+                    <span class="stock">✔ In stock</span>
+                </div>
+                <div class="actions">
+                    <select>
+                        <option>1</option>
+                        <option>2</option>
+                    </select>
+                    <button class="remove">✕</button>
+                </div>
+            </div>
+        </div>
 
-        function log(msg) {
-            document.getElementById("log").innerText += msg + "\n";
-        }
+        <div class="summary">
+            <h2>Order summary</h2>
 
-        function startScanner() {
-            const html5QrCode = new Html5Qrcode("reader");
+            <div class="row">
+                <span>Subtotal</span>
+                <span>$99.00</span>
+            </div>
 
-            Html5Qrcode.getCameras().then(devices => {
-                if (devices && devices.length) {
-                    let cameraId = devices.find(device =>
-                        device.label.toLowerCase().includes('back') ||
-                        device.label.toLowerCase().includes('rear')
-                    )?.id || devices[0].id;
+            <div class="total">
+                <span>Total</span>
+                <span>$112.32</span>
+            </div>
 
-                    html5QrCode.start(
-                        { facingMode: "environment" },
-                        { fps: 10, qrbox: 250 },
-                        (decodedText) => {
-                            log("SCAN: " + decodedText);
+            <button class="checkout">Checkout</button>
+        </div>
 
-                            fetch(`${API_URL}/${decodedText}`, {
-                                method: "POST"
-                            })
-                                .then(res => res.json())
-                                .then(data => {
-                                    log("RESPUESTA: " + JSON.stringify(data));
-                                })
-                                .catch(err => log("ERROR: " + err));
+    </div>
 
-                            html5QrCode.stop();
-                        }
-                    );
-                }
-            }).catch(err => {
-                log("ERROR CAMARA: " + err);
-            });
-        }
-    </script>
+    <!-- SCANNER -->
+    <div class="scanner-box">
+        <div id="reader"></div>
+        <pre id="log"></pre>
+    </div>
 
 </body>
 
