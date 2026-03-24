@@ -2,97 +2,55 @@
 <html>
 
 <head>
-    <title>Escáner de Productos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner</title>
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            background: #f5f5f5;
-        }
-
-        h2 {
-            margin-top: 20px;
-        }
-
-        #reader {
-            width: 300px;
-            margin: auto;
-            margin-top: 20px;
-        }
-
-        #resultado {
-            margin-top: 20px;
-            font-size: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            width: 250px;
-            margin: auto;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 
 <body>
 
-    <h2>📷 Escanear precio</h2>
+    <h2>Escanear producto</h2>
+    <button onclick="startScanner()">Escanear</button>
 
-    <button onclick="iniciarScanner()">Escanear código</button>
+    <div id="reader" style="width:300px; margin-top:20px;"></div>
+
     <pre id="log"></pre>
-    <div id="reader"></div>
-    <div id="resultado">Esperando acción:...</div>
-    <button onclick="probar()">Probar</button>
 
     <script>
-        function probar() {
-            alert("FUNCIONA JS");
-        }
-    </script>
-    <script>
-        const API_URL = "https://invadable-chasidy-fleshly.ngrok-free.dev/products";// 🔥 cambiá por la IP de tu backend
+        const API_URL = "https://invadable-chasidy-fleshly.ngrok-free.dev/products";
 
-        let scanner;
-
-        function iniciarScanner() {
-
-            document.getElementById("resultado").innerText = "Abriendo cámara ya...";
-
-            scanner = new Html5Qrcode("reader");
-
-            scanner.start(
-                { facingMode: "environment" },
-                { fps: 10, qrbox: 250 },
-                onScanSuccess
-            );
-        }
         function log(msg) {
             document.getElementById("log").innerText += msg + "\n";
         }
-        function onScanSuccess(code) {
-            alert("SCAN: " + decodedText);
-            log("SCAN: " + decodedText);
 
-            document.getElementById("resultado").innerText = "Buscando...";
+        function startScanner() {
+            const html5QrCode = new Html5Qrcode("reader");
 
-            scanner.stop().catch(() => { });
+            Html5Qrcode.getCameras().then(devices => {
+                if (devices && devices.length) {
+                    let cameraId = devices[0].id;
 
-            fetch(API_URL + "/" + code, { method: "POST" })
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById("resultado").innerHTML =
-                        `<b>${data.name}</b><br>💲 $${data.price}`;
-                })
-                .catch(() => {
-                    document.getElementById("resultado").innerText = "❌ Producto no encontrado";
-                });
+                    html5QrCode.start(
+                        cameraId,
+                        { fps: 10, qrbox: 250 },
+                        (decodedText) => {
+                            log("SCAN: " + decodedText);
+
+                            fetch(`${API_URL}/${decodedText}`, {
+                                method: "POST"
+                            })
+                                .then(res => res.json())
+                                .then(data => {
+                                    log("RESPUESTA: " + JSON.stringify(data));
+                                })
+                                .catch(err => log("ERROR: " + err));
+
+                            html5QrCode.stop(); // corta después de escanear
+                        }
+                    );
+                }
+            }).catch(err => {
+                log("ERROR CAMARA: " + err);
+            });
         }
     </script>
 
