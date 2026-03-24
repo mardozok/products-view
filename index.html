@@ -27,7 +27,10 @@
 
             Html5Qrcode.getCameras().then(devices => {
                 if (devices && devices.length) {
-                    let cameraId = devices[0].id;
+                    let cameraId = devices.find(device =>
+                        device.label.toLowerCase().includes('back') ||
+                        device.label.toLowerCase().includes('rear')
+                    )?.id || devices[0].id;
 
                     html5QrCode.start(
                         cameraId,
