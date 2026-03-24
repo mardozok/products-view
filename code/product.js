@@ -1,7 +1,10 @@
+
+const totalBtn = document.getElementById("totalText")
+let total = 0;
 export function addProductToCart(product) {
     const container = document.querySelector(".products");
 
-
+    totalBtn.innerText = "sdsd"
     const existing = document.querySelector(`[data-id="${product.id}"]`);
 
     if (existing) {
@@ -30,6 +33,8 @@ export function addProductToCart(product) {
             <button class="remove">✕</button>
         </div>
     `;
-
+    total += product.price;
     container.appendChild(div);
 }
+totalBtn.innerHTML = total;
+
