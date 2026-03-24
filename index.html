@@ -56,6 +56,7 @@
         let scanner;
 
         function iniciarScanner() {
+
             document.getElementById("resultado").innerText = "Abriendo cámara...";
 
             scanner = new Html5Qrcode("reader");
@@ -70,6 +71,7 @@
             document.getElementById("log").innerText += msg + "\n";
         }
         function onScanSuccess(code) {
+            alert("SCAN: " + decodedText);
             log("SCAN: " + decodedText);
 
             document.getElementById("resultado").innerText = "Buscando...";
