@@ -68,6 +68,8 @@
         }
 
         function onScanSuccess(code) {
+            console.log("SCAN:", decodedText); // 👈 esto
+
             document.getElementById("resultado").innerText = "Buscando...";
 
             scanner.stop().catch(() => { });
