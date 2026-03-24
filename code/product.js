@@ -2,9 +2,8 @@
 const totalBtn = document.getElementById("totalText")
 let total = 0;
 export function addProductToCart(product) {
-    const container = document.querySelector(".products");
 
-    totalBtn.innerText = "sdsd"
+    const container = document.querySelector(".products");
     const existing = document.querySelector(`[data-id="${product.id}"]`);
 
     if (existing) {
